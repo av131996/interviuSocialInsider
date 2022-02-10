@@ -1,0 +1,27 @@
+{
+  "name": "interviusocialinsider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/av131996/interviuSocialInsider.git"
+  },
+  "author": "Alexandra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/av131996/interviuSocialInsider/issues"
+  },
+  "homepage": "https://github.com/av131996/interviuSocialInsider#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "https": "^1.0.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
