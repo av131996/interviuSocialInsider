@@ -70,20 +70,27 @@ function get_brands(options) {
         brands.profiles.forEach(brand => {
         //  console.log(brand.profile_type);
           //console.log(brand_name + " " + brand.profile_type);
+           brandElement["total_fans"]=0;
+           brandElement["total_engagement"]=0;
           get_fans_engagement(brand_id, brand.profile_type, 1608209422374, 1639745412436,  function(fans, engagement){
                 //console.log(fans);
                 //total_engagement=engagement;
                 //total_fans=fans;
                 if(fans!=0){
                   console.log(fans);
-                  brandElement["total_fans"]=fans;
+                  brandElement["total_fans"]+=fans;
                 }
                 if(engagement!=0){
-                  brandElement["total_engagement"]=engagement;
+                  brandElement["total_engagement"]+=engagement;
 
-                }
-                console.log(brand.profile_type);
-                console.log(brandElement);
+                 }
+               // total_fans+=fans;
+                //console.log(fans);
+
+                //console.log(brand_name);
+               // console.log(brand.profile_type);
+               console.log(brandElement);
+               
 
                // console.log(brand_id + " " + brand.profile_type + " " + fans);
 
@@ -100,13 +107,13 @@ function get_brands(options) {
         })
        //console.log(total_fans);
 
-        brandElement={
-          brand_name: brand_name,
-          total_profiles: total_profiles,
-          total_fans: total_fans,
-          total_engagement: total_engagement
-        };
-        //console.log(brandElement);
+        // brandElement={
+        //   brand_name: brand_name,
+        //   total_profiles: total_profiles,
+        //   total_fans: total_fans,
+        //   total_engagement: total_engagement
+        // };
+        console.log(brandElement);
         //brand.profiles
       })
     }
@@ -139,8 +146,9 @@ function get_fans_engagement(id, profile, start_date, end_date, callback) {
    // callback(response.body);
   // var results = JSON.parse(jsonBody);
   let fans = 0;
-
+  //var sum_fans = 0;
   var engagement = 0;
+  console.log(id);
   for (var j in results.resp[id]) {
     //console.log(results.resp[id][j]);
 
