@@ -19,7 +19,7 @@ const get_brands = async () => {
   }
 }
 
- async function get_fans_engagement(id, profile, start_date, end_date, callback) {
+ async function get_fans_engagement(id, profile, start_date, end_date, ) {
     var options_get_profile_data = {
       'method': 'POST',
       'url': 'https://app.socialinsider.io/api/',
@@ -50,41 +50,59 @@ const countFansAndEngagement = async () => {
     var total_fans;
     var total_engagement;
     var allBrands = [];
+    var brandElement;
     if (brands!=null){
     if(brands.hasOwnProperty('data')){
     console.log("Breeds " + JSON.stringify(brands.data.result))
-    brands.data.result.forEach(async (brand) => {
+     await Promise.all(
+      brands.data.result.map(async (brand) => {
+      brandElement = {};
         brand_name = brand.brandname;
         console.log(brand_name);
         total_profiles = brand.profiles.length;
         total_fans = 0;
         total_engagement = 0;
         var brand_id = brand.profiles[0].id;
-        brand.profiles.forEach(async (profile) =>{
+        await Promise.all(brand.profiles.map(async (profile) =>{
             //console.log(profile.profile_type);
             const fansAndEngagement = await get_fans_engagement(brand_id, profile.profile_type, 1608209422374, 1639745412436);
             if(fansAndEngagement!=null){
              if(!fansAndEngagement.data.resp[brand_id].hasOwnProperty('err')){
                 // console.log(JSON.stringify(fansAndEngagement.data));
-                let values = get_fans_engagement_per_profile(fansAndEngagement.data, brand_id);
+                console.log(brand_id);
+
+                let values = get_fans_engagement_per_profile(fansAndEngagement.data, brand_id, brand_name, total_profiles);
+                brand_name =brand_name;
+
                 total_fans += values.fans;
                 total_engagement += values.engagement;
              }
             }
-            console.log(total_fans + " " + total_engagement);
-
+           // return total_fans;
             // if(fansAndEngagement!=null && fansAndEngagement.hasOwnProperty('data'))
         })
+        )
+        console.log(total_fans + " " + total_engagement+ " " +brand_name);
+        brandElement={
+          brand_name: brand_name,
+          total_profiles: total_profiles,
+          total_fans: total_fans,
+          total_engagement: total_engagement
+        };
+        allBrands.push(brandElement);
+
     })
+    )
+    console.log(allBrands);
     // if (breeds.data.message) {
     //   console.log(`Got ${Object.entries(breeds.data.message).length} breeds`)
     // }
   }
 }
 }
-function get_fans_engagement_per_profile(jsonBody, id) {
+function get_fans_engagement_per_profile(jsonBody, id, brand_name, total_profiles) {
   //var results = JSON.parse(jsonBody);
-  let fans = 0;
+  var fans = 0;
   var engagement = 0;
   //console.log("id "+id);
   for (var j in jsonBody.resp[id]) {
@@ -98,7 +116,7 @@ function get_fans_engagement_per_profile(jsonBody, id) {
       engagement += jsonBody.resp[id][j].engagement + engagement;
     }
   }
-  //console.log(fans);
+  console.log(fans + " " +engagement+ " function " + brand_name );
   return {fans: fans, engagement:engagement};
 }
   countFansAndEngagement();
