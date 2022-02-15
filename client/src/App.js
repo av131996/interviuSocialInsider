@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import React from 'react'
 import './App.css';
 // import ReactDOM from "react-dom";
@@ -12,7 +11,6 @@ function App() {
 
   const callApi = async () => {
     await fetch("http://localhost:9000/newroute")
-    // console.log("Data " +JSON.stringify(data));
     .then(response => response.json())
     .then(data => setBrands(data));
   }
@@ -29,6 +27,8 @@ function App() {
        endDate={endDate} // add the endDate to your startDate DatePicker now that it is defined
        onChange={date => setStartDate(date)}
      />
+     </p>
+     <p>
     <DatePicker
        selected={endDate}
        selectsEnd
@@ -39,7 +39,7 @@ function App() {
      />
      </p>
         
-           <table>
+      <table>
          <tr>
            <th>Brand Name</th>
            <th>Total profiles</th>
@@ -57,12 +57,13 @@ function App() {
            )
          })} 
        </table> 
+       <p>
        <div>Selected start date={startDate ? startDate.toString() : null}</div>
- <div>Selected end date={endDate ? endDate.toString() : null}</div>
+      <div>Selected end date={endDate ? endDate.toString() : null}</div>
+      </p>
        
    </div>
   );
 }
-// const rootElement = document.getElementById("root");
-// ReactDOM.render(<App />, rootElement);
+
 export default App;

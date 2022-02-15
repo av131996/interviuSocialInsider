@@ -1,17 +1,23 @@
 .App {
   margin: auto;
   width: 50%;
-  padding: 500px;
   height: 100vh;
-  display: inline;
   justify-content: center;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }
   
 table {
   border: 2px solid forestgreen;
   width: 800px;
   height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+p {
+  margin-left: auto;
+  margin-right: auto;
 }
   
 th {
