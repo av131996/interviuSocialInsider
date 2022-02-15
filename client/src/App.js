@@ -1,67 +1,68 @@
-// import './App.css';
-// import React from "react";
-// // Example of a data array that
-// // you might receive from an API
-// // const data = [
-// //   { name: "Anom", age: 19, gender: "Male" , sum: 10},
-// //   { name: "Megha", age: 19, gender: "Female" },
-// //   { name: "Subham", age: 25, gender: "Male"},
-// // ]
-  
-// function App() {
-//   const [data, setData] = React.useState(null);
-//   console.log(data);
-//   React.useEffect(() => {
-//     fetch("http://localhost:3000/api")
-//       .then(async (res) => { await res.json();})
-//       .then((data) => {setData(data.test); console.log(data);}
-//       );
-
-//   }, []);
-//   return (
-//     <div className="App">
-//          <p>{!data ? "Loading..." : data}</p> 
-//       <table>
-//         <tr>
-//           <th>Brand Name</th>
-//           <th>Total profiles</th>
-//           <th>Total Fans</th>
-//           <th>Total Engagement</th>
-//         </tr>
-//         {/* {data.map((val, key) => {
-//           return (
-//             <tr key={key}>
-//               <td>{val.name}</td>
-//               <td>{val.age}</td>
-//               <td>{val.gender}</td>
-//               <td>{val.sum}</td>
-//             </tr>
-//           )
-//         })} */}
-//       </table>
-//     </div>
-//   );
-// }
-  
-// export default App;
-import React, { Component } from 'react';
+import logo from './logo.svg';
+import React from 'react'
 import './App.css';
+// import ReactDOM from "react-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-export default class App extends Component {
-  state = { username: null };
+function App() {
+  const [brands, setBrands] = React.useState([]);
+  const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(new Date());
 
-  componentDidMount() {
-    fetch('/api')
-      .then(res => res.json())
-      .then(user => this.setState({ username: user.username }));
+  const callApi = async () => {
+    await fetch("http://localhost:9000/newroute")
+    // console.log("Data " +JSON.stringify(data));
+    .then(response => response.json())
+    .then(data => setBrands(data));
   }
-
-  render() {
-    const { username } = this.state;
-    return (
-      <div>
-        {username ? <h1>{`Hello ${username}`}</h1> : <h1>Loading.. please wait!</h1>}
-      </div>
-    );
-  }
+  React.useEffect(() => {
+    callApi()
+  }, []);
+  return (
+    <div className='App'>
+      <p>
+      <DatePicker
+       selected={startDate}
+       selectsStart
+       startDate={startDate}
+       endDate={endDate} // add the endDate to your startDate DatePicker now that it is defined
+       onChange={date => setStartDate(date)}
+     />
+    <DatePicker
+       selected={endDate}
+       selectsEnd
+       startDate={startDate}
+       endDate={endDate}
+       minDate={startDate}
+       onChange={date => setEndDate(date)}
+     />
+     </p>
+        
+           <table>
+         <tr>
+           <th>Brand Name</th>
+           <th>Total profiles</th>
+           <th>Total Fans</th>
+           <th>Total Engagement</th>
+         </tr>
+          {brands.map((val, key) => {
+           return (
+             <tr key={key}>
+               <td>{val.brand_name}</td>
+               <td>{val.total_profiles}</td>
+               <td>{val.total_fans}</td>
+               <td>{val.total_engagement}</td>
+             </tr>
+           )
+         })} 
+       </table> 
+       <div>Selected start date={startDate ? startDate.toString() : null}</div>
+ <div>Selected end date={endDate ? endDate.toString() : null}</div>
+       
+   </div>
+  );
 }
+// const rootElement = document.getElementById("root");
+// ReactDOM.render(<App />, rootElement);
+export default App;
